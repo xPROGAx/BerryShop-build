@@ -42,7 +42,7 @@ const MobileMenu = () => {
                         />
                     </button>
                     <div className={`${isOpen ? 'flex' : 'hidden'}`}>
-                        <ul className='flex flex-col absolute top-12 left-0 rounded-b-md w-full gap-6 bg-white text-black font-semibold'>
+                        <ul className='flex flex-col absolute top-12 left-0 rounded-b-md w-full gap-6 bg-white text-black font-semibold border-b-2 pb-5'>
                             {[
                                 { name: 'Клубника в шоколаде', path: '/strawberry' },
                                 { name: 'Цветы', path: '/flowers' },
@@ -61,10 +61,12 @@ const MobileMenu = () => {
                                     )}
                                 </li>
                             ))}
+                            <div className="text-black mr-4 self-center">+7 (922) 400-09-40</div>
+                            <div className="text-black mr-4 self-center">+7 (917) 928-04-54</div>
                         </ul>
                     </div>
 
-                    <div className="text-black mr-4">+7 123 456 7890</div>
+                    
 
                     <div className="relative">
                         <button

@@ -45,7 +45,7 @@ const ProductsSection = ({ id, title, category }) => {
   return (
     <section id={id} className="my-8">
       <h2 className="text-2xl font-bold text-center mb-4">{title}</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-11/12 ml-auto mr-auto">
         {products.length === 0 ? (
           <p className="text-center">Нет товаров в этой категории.</p>
         ) : (
