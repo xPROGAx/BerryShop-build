@@ -6,12 +6,16 @@ import ProductsSection from "../../components/ProductsSection";
 import Marquee from "@/components/Marquee";
 
 const categories = [
-  { id: "popular", name: "Популярные наборы" },
-  { id: "chocolate", name: "Клубника в шоколаде" },
-  { id: "limited", name: "Лимитированная коллекция" },
-  { id: "mix", name: "Наборы микс" },
-  { id: "bouquets", name: "Букеты с клубникой" },
-  { id: "combo", name: "Комбо наборы" },
+  { id: "bqt_sb_fl", name: "Букеты с клубникой и цветами" },
+  { id: "bqt_sb", name: "Букеты из клубники" },
+  { id: "basket", name: "Шляпные коробочки и корзинки с клубникой и цветами" },
+  { id: "set", name: "Наборы из клубники" },
+  { id: "cake", name: "Торты из клубники" },
+  { id: "bqt_fl", name: "Букеты цветов" },
+  { id: "combo", name: "Комбо и акции" },
+  { id: "other", name: "Шоколад и прочее" },
+  { id: "limit", name: "Лимитированные предложения" },
+  { id: "popular", name: "Популярное" },
 ];
 
 const StrawberryPage = () => {
