@@ -48,7 +48,7 @@ const DesktopMenu = () => {
                         ))}
                     </ul>
 
-                    <div className="text-black mr-4">+7 (922) 400-09-40</div>
+                    <div className="text-black mr-4">BerryShop +7 (922) 400-09-40</div>
 
                     <div className="relative">
                         <button

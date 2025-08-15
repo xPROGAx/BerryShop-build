@@ -61,8 +61,8 @@ const MobileMenu = () => {
                                     )}
                                 </li>
                             ))}
-                            <div className="text-black mr-4 self-center">+7 (922) 400-09-40</div>
-                            <div className="text-black mr-4 self-center">+7 (917) 928-04-54</div>
+                            <div className="text-black mr-4 self-center">BerryShop +7 (922) 400-09-40</div>
+                            <div className="text-black mr-4 self-center">Менеджер Юлия +7 (917) 928-04-54</div>
                         </ul>
                     </div>
 

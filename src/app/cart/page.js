@@ -161,6 +161,8 @@ const CartPage = () => {
 
     const data = await response.json();
 
+    alert('Спасибо за заказ, скоро с вами свяжется менеджер')
+
     if (!response.ok) {
       console.error('Ошибка Telegram API:', data);
       throw new Error('Ошибка отправки сообщения');
