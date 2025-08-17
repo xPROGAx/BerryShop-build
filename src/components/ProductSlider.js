@@ -34,10 +34,10 @@ const ProductSlider = ({ images, productName }) => {
               <Image
                 src={img}
                 alt='bouquet'
-                layout='intrinsic'
-                width={400}
-                height={500}
-                className="object-cover rounded-md cursor-pointer m-auto"
+                // layout='intrinsic'
+                width={300}
+                height={400}
+                className="object-cover rounded-md cursor-pointer m-auto w-100 h-130"
                 loading="lazy"
               />
           </SwiperSlide>

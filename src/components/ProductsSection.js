@@ -68,9 +68,9 @@ const ProductsSection = ({ id, title, category }) => {
                     <Image
                       src={product.image} // Плейсхолдер
                       alt={product.name}
-                      width={400}
-                      height={500}
-                      className="object-cover rounded-md cursor-pointer"
+                      className="object-cover rounded-md cursor-pointer w-100 h-130"
+                      width={300}
+                      height={400}
                       onClick={() => openModal(product)}
                       loading="lazy"
                     />
