@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-function useSheetProducts(category) {
+function useSheetProducts() {  // Убираем параметр категории из хука
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -10,16 +10,14 @@ function useSheetProducts(category) {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`/api/products?category=${category}`);
+        const response = await fetch('/api/products');  // Запрашиваем все продукты
         if (!response.ok) {
           throw new Error('Ошибка загрузки данных с сервера');
         }
         const data = await response.json();
 
-        // Логируем полученные данные для проверки
-        console.log('Полученные данные продуктов:', data); //TODO_DELETE
+        console.log('Полученные данные продуктов:', data);
 
-        // Проверяем структуру данных перед их установкой
         if (Array.isArray(data)) {
           data.forEach(product => {
             if (!product.id || !product.name || !product.price || !Array.isArray(product.sliders)) {
@@ -38,7 +36,7 @@ function useSheetProducts(category) {
     };
 
     fetchProducts();
-  }, [category]);
+  }, []);  // Пустой массив зависимостей - загружаем один раз при монтировании
 
   return { products, loading, error };
 }

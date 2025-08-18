@@ -23,9 +23,17 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
 
-    const cached = cache.get(category);
-    if (cached) {
-      return NextResponse.json(cached);
+    // Проверяем кэш для всех продуктов
+    const cachedAllProducts = cache.get('all_products');
+    if (cachedAllProducts) {
+      // Если есть кэш и не запрошена фильтрация - возвращаем все
+      if (!category) return NextResponse.json(cachedAllProducts);
+      
+      // Фильтруем по категории
+      const filtered = cachedAllProducts.filter(product => 
+        product.category.includes(category)
+      );
+      return NextResponse.json(filtered);
     }
 
     const rawData = await fetchSheetData();
@@ -38,7 +46,10 @@ export async function GET(request) {
       name: product.name,
       price: product.price.split(',').map(q => Number(q.trim())),
       image: product.image.trim(),
-      category: product.category || '',
+      // Преобразуем категории в массив (разделитель может быть запятая или точка с запятой)
+      category: product.category 
+        ? product.category.split(/[,;]/).map(c => c.trim()).filter(c => c)
+        : [],
       description: product.description || '',
       images: product.sliders ? product.sliders.split(',').map(i => i.trim()) : [],
       options: {
@@ -47,10 +58,18 @@ export async function GET(request) {
       },
     }));
 
-    console.log(products);
+    // Кэшируем все продукты
+    cache.set('all_products', products);
 
-    cache.set(category, products);
-    return NextResponse.json(products);
+    // Если категория не указана - возвращаем все
+    if (!category) return NextResponse.json(products);
+
+    // Фильтруем продукты по категории
+    const filteredProducts = products.filter(product => 
+      product.category.includes(category)
+    );
+
+    return NextResponse.json(filteredProducts);
   } catch (err) {
     console.error('API ошибка:', err);
     return NextResponse.json({ error: 'Ошибка загрузки данных' }, { status: 500 });

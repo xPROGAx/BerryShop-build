@@ -4,16 +4,16 @@ import ProductsSection from "../../components/ProductsSection";
 import Marquee from "@/components/Marquee";
 
 const categories = [
-  { id: "popular", name: "Популярные букеты" },
-  { id: "mixed", name: "Сборные букеты" },
-  { id: "large", name: "Большие букеты" },
-  { id: "hatboxes", name: "Шляпные коробки" },
-  { id: "combo", name: "Комбо 2в1" },
-  { id: "seasonal", name: "Сезонные цветы" },
-  { id: "deals", name: "Акции" },
-  { id: "roses", name: "Розы" },
-  { id: "cards", name: "Открытки" },
-  { id: "vases", name: "Вазы для цветов" },
+  { id: "bqt_sb_fl", name: "Букеты с клубникой и цветами" },
+  { id: "bqt_sb", name: "Букеты из клубники" },
+  { id: "basket", name: "Шляпные коробочки и корзинки с клубникой и цветами" },
+  { id: "set", name: "Наборы из клубники" },
+  { id: "cake", name: "Торты из клубники" },
+  { id: "bqt_fl", name: "Букеты цветов" },
+  { id: "combo", name: "Комбо и акции" },
+  { id: "other", name: "Шоколад и прочее" },
+  { id: "limit", name: "Лимитированные предложения" },
+  { id: "popular", name: "Популярное" },
 ];
 
 const FlowersPage = () => {

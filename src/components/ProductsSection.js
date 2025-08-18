@@ -4,11 +4,25 @@ import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { useCart } from '../store/cartContext';
 import { useSheetProducts } from '../hooks/useSheetProducts';
 import Image from 'next/image';
-import ProductSlider from './ProductSlider';  // Импортируем компонент ProductSlider
+import ProductSlider from './ProductSlider';
 
 const ProductsSection = ({ id, title, category }) => {
-  const { addToCart } = useCart();
-  const { products, loading, error } = useSheetProducts(category);
+  
+  const categories = typeof category === 'string' ? [category] : category;
+  const { products, loading, error } = useSheetProducts(categories);
+
+  // Фильтруем продукты по категориям
+  const filteredProducts = products.filter(product => {
+    // Если у продукта категория - строка, проверяем вхождение
+    if (typeof product.category === 'string') {
+      return categories.includes(product.category);
+    }
+    // Если у продукта категории - массив, проверяем пересечение
+    if (Array.isArray(product.category)) {
+      return product.category.some(cat => categories.includes(cat));
+    }
+    return false;
+  });
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedOption, setSelectedOption] = useState('');
@@ -63,48 +77,51 @@ const ProductsSection = ({ id, title, category }) => {
     <section id={id} className="my-8">
       <h2 className="text-2xl font-bold text-center mb-4">{title}</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-11/12 ml-auto mr-auto">
-        {products.length === 0 ? (
+        {loading ? (
+          <div className="loader">Загрузка...</div>
+        ) : error ? (
+          <p className="text-red-500">Ошибка: {error}</p>
+        ) : filteredProducts.length === 0 ? (
           <p className="text-center">Нет товаров в этой категории.</p>
         ) : (
-          products.map((product) => {
-            if (product.category !== category) return;
-            if (!product.name || !product.price || !product.image) {
-              console.error(`Ошибка: отсутствуют обязательные данные для продукта с id ${product.id}`);
-              return null;
-            }
+          filteredProducts.map((product) => {
+              if (!product.name || !product.price || !product.image) {
+                console.error(`Ошибка: отсутствуют обязательные данные для продукта с id ${product.id}`);
+                return null;
+              }
 
-            // Если у продукта есть несколько изображений, показываем слайдер
-            const isSlider = product.images && Array.isArray(product.images) && product.images.length > 1;
+              // Если у продукта есть несколько изображений, показываем слайдер
+              const isSlider = product.images && Array.isArray(product.images) && product.images.length > 1;
 
-            return (
-              <div key={product.id} className="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between">
-                <div className="relative w-full 2x1:h-100">
-                  {isSlider ? (
-                    <ProductSlider images={product.images} productName={product.name} />
-                  ) : (
-                    <Image
-                      src={product.image} // Плейсхолдер
-                      alt={product.name}
-                      className="object-cover rounded-md cursor-pointer w-100 h-130"
-                      width={300}
-                      height={400}
-                      onClick={() => openModal(product)}
-                      loading="lazy"
-                    />
-                  )}
+              return (
+                <div key={product.id} className="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between">
+                  <div className="relative w-full 2x1:h-100">
+                    {isSlider ? (
+                      <ProductSlider images={product.images} productName={product.name} />
+                    ) : (
+                      <Image
+                        src={product.image}
+                        alt={product.name}
+                        className="object-cover rounded-md cursor-pointer w-100 h-130"
+                        width={300}
+                        height={400}
+                        onClick={() => openModal(product)}
+                        loading="lazy"
+                      />
+                    )}
+                  </div>
+                  <h3 className="mt-2 text-lg font-semibold">{product.name}</h3>
+                  <p className="text-sm text-gray-500 line-clamp-2">{product.description || 'Без описания'}</p>
+                  <p className="text-red-500 font-bold">{product.price[0]} ₽</p>
+                  <button
+                    className="mt-2 bg-[#F1ADAE] text-white px-4 py-2 rounded-md shadow-md hover:bg-[#ec9898] transition"
+                    onClick={() => openModal(product)}
+                  >
+                    Заказать
+                  </button>
                 </div>
-                <h3 className="mt-2 text-lg font-semibold">{product.name}</h3>
-                <p className="text-sm text-gray-500 line-clamp-2">{product.description || 'Без описания'}</p>
-                <p className="text-red-500 font-bold">{product.price[0]} ₽</p>
-                <button
-                  className="mt-2 bg-[#F1ADAE] text-white px-4 py-2 rounded-md shadow-md hover:bg-[#ec9898] transition"
-                  onClick={() => openModal(product)}
-                >
-                  Заказать
-                </button>
-              </div>
-            );
-          })
+              );
+            })
         )}
       </div>
 
