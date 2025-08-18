@@ -4,10 +4,10 @@ import React from "react";
 const MarqueeItem = ({ text }) => (
   <a
     href="/app/deals/page.js"
-    className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-black whitespace-nowrap hover:underline transition"
+    className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-black whitespace-nowrap transition"
   >
     <span className="text-sm sm:text-base">🍓</span>
-    {text}
+    <p className="hover:underline">{text}</p>
   </a>
 );
 

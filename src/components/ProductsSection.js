@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { useCart } from '../store/cartContext';
 import { useSheetProducts } from '../hooks/useSheetProducts';
 import Image from 'next/image';
@@ -17,20 +17,34 @@ const ProductsSection = ({ id, title, category }) => {
   const [selectedImage, setSelectedImage] = useState('');
 
   const openModal = useCallback((product) => {
-    const firstOption = product.options.size?.[0];
-
-    
     setSelectedProduct(product);
-    setSelectedOption(firstOption);
-    setFinalPrice(finalPrice);
+    const firstOption = product.options.size?.[0];
+    const firstPrice = product.price?.[0];
+    setSelectedOption(firstOption || '');
+    setFinalPrice(firstPrice || 0);
     setIsModalOpen(true);
-    setSelectedImage(product.image); // Сначала показываем основное изображение
+    setSelectedImage(product.image);
   }, []);
 
   const closeModal = useCallback(() => {
     setSelectedProduct(null);
     setIsModalOpen(false);
   }, []);
+
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${window.innerWidth - document.documentElement.clientWidth}px`; // Компенсация для скроллбара
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    };
+  }, [isModalOpen]);
 
   const handleAddToCart = () => {
     if (!selectedOption) {
@@ -80,8 +94,8 @@ const ProductsSection = ({ id, title, category }) => {
                   )}
                 </div>
                 <h3 className="mt-2 text-lg font-semibold">{product.name}</h3>
-                <p className="text-sm text-gray-500">{product.description || 'Без описания'}</p>
-                <p className="text-red-500 font-bold">{product.price[1]} ₽</p>
+                <p className="text-sm text-gray-500 line-clamp-2">{product.description || 'Без описания'}</p>
+                <p className="text-red-500 font-bold">{product.price[0]} ₽</p>
                 <button
                   className="mt-2 bg-[#F1ADAE] text-white px-4 py-2 rounded-md shadow-md hover:bg-[#ec9898] transition"
                   onClick={() => openModal(product)}
@@ -96,12 +110,10 @@ const ProductsSection = ({ id, title, category }) => {
 
       {/* Модалка с слайдером */}
       {isModalOpen && selectedProduct && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-50 backdrop-blur-sm animate-fade-in"
-          onClick={closeModal}
-        >
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-50 backdrop-blur-sm animate-fade-in overflow-y-auto py-8" 
+            onClick={closeModal}>
           <div
-            className="bg-white w-full max-w-lg p-6 rounded-2xl shadow-2xl transform transition-all scale-100 animate-fade-in"
+            className="bg-white w-full max-w-lg p-6 rounded-2xl shadow-2xl transform transition-all scale-100 animate-fade-in max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <button

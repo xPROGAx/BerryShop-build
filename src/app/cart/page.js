@@ -178,6 +178,38 @@ const CartPage = () => {
   }
 }
 
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  // Обновляем текущее время каждую минуту
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000); // 60 секунд
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // Функция для проверки, доступно ли время
+  const isTimeAvailable = (timeStr) => {
+    if (!timeStr) return true;
+    
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    const optionTime = new Date();
+    optionTime.setHours(hours, minutes, 0, 0);
+    
+    // Добавляем 1 час (60 минут) к текущему времени для сравнения
+    const comparisonTime = new Date(currentTime.getTime() + 60 * 60 * 1000);
+    
+    return optionTime > comparisonTime;
+  };
+
+  const timeOptions = [
+    { value: "9:00", label: "9:00" },
+    { value: "12:00", label: "12:00" },
+    { value: "15:00", label: "15:00" },
+    { value: "18:00", label: "18:00" }
+  ];
+
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">Корзина</h1>
@@ -340,10 +372,15 @@ const CartPage = () => {
                   className="w-full p-2 border rounded-md"
                 >
                   <option value="">Выберите время</option>
-                  <option value="9:00">9:00</option>
-                  <option value="12:00">12:00</option>
-                  <option value="15:00">15:00</option>
-                  <option value="18:00">18:00</option>
+                  {timeOptions.map((option) => (
+                    <option 
+                      key={option.value}
+                      value={option.value}
+                      disabled={!isTimeAvailable(option.value)}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
                 </select>
               </div>
 
