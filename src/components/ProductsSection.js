@@ -17,8 +17,11 @@ const ProductsSection = ({ id, title, category }) => {
   const [selectedImage, setSelectedImage] = useState('');
 
   const openModal = useCallback((product) => {
+    const firstOption = product.options.size?.[0];
+
+    
     setSelectedProduct(product);
-    setSelectedOption('');
+    setSelectedOption(firstOption);
     setFinalPrice(finalPrice);
     setIsModalOpen(true);
     setSelectedImage(product.image); // Сначала показываем основное изображение
