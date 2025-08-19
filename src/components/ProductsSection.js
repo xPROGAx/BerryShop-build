@@ -7,6 +7,7 @@ import Image from 'next/image';
 import ProductSlider from './ProductSlider';
 
 const ProductsSection = ({ id, title, category }) => {
+  const { addToCart } = useCart();
   
   const categories = typeof category === 'string' ? [category] : category;
   const { products, loading, error } = useSheetProducts(categories);
