@@ -237,7 +237,7 @@ const CartPage = () => {
                     className="object-cover mx-auto rounded-md"
                   />
                 </div>
-                <div className="flex flex-wrap items-center gap-2 ml-5">
+                <div className="flex flex-wrap justify-between gap-2 ml-5 w-full">
                   <div className='ml-5'>
                     <p className="font-semibold">{product.name}</p>
                     <p className="text-sm">{product.price}</p>
@@ -246,14 +246,14 @@ const CartPage = () => {
                   <div>
                     <button
                       onClick={() => decreaseQuantity(product.id, product.selectedOption)}
-                      className="px-2 py-1 bg-gray-200 rounded"
+                      className="px-2 py-1 m-4 bg-gray-200 rounded"
                     >
                       -
                     </button>
                     <span>{product.quantity}</span>
                     <button
                       onClick={() => increaseQuantity(product.id, product.selectedOption)}
-                      className="px-2 py-1 bg-gray-200 rounded"
+                      className="px-2 m-4 py-1 bg-gray-200 rounded"
                     >
                       +
                     </button>
