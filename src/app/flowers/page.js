@@ -5,13 +5,9 @@ import Marquee from "@/components/Marquee";
 
 const categories = [
   { id: "bqt_sb_fl", name: "Букеты с клубникой и цветами" },
-  { id: "bqt_sb", name: "Букеты из клубники" },
   { id: "basket", name: "Шляпные коробочки и корзинки с клубникой и цветами" },
-  { id: "set", name: "Наборы из клубники" },
-  { id: "cake", name: "Торты из клубники" },
   { id: "bqt_fl", name: "Букеты цветов" },
   { id: "combo", name: "Комбо и акции" },
-  { id: "other", name: "Шоколад и прочее" },
   { id: "limit", name: "Лимитированные предложения" },
   { id: "popular", name: "Популярное" },
 ];

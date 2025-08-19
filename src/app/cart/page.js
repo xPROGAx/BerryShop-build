@@ -228,7 +228,7 @@ const CartPage = () => {
                 key={`${product.id}-${product.selectedOption}-${index}`}
                 className="flex justify-between items-center py-4 border-b"
               >
-                <div className="flex items-center">
+                <div className="flex items-center flex-wrap">
                   <Image
                     src={product.image}
                     alt={product.name}
@@ -236,32 +236,35 @@ const CartPage = () => {
                     height={250}
                     className="object-cover mx-auto rounded-md"
                   />
+                </div>
+                <div className="flex flex-wrap items-center gap-2 ml-5">
                   <div className='ml-5'>
                     <p className="font-semibold">{product.name}</p>
                     <p className="text-sm">{product.price}</p>
                     <p className="text-sm">{product.selectedOption}</p>
                   </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => decreaseQuantity(product.id, product.selectedOption)}
-                    className="px-2 py-1 bg-gray-200 rounded"
-                  >
-                    -
-                  </button>
-                  <span>{product.quantity}</span>
-                  <button
-                    onClick={() => increaseQuantity(product.id, product.selectedOption)}
-                    className="px-2 py-1 bg-gray-200 rounded"
-                  >
-                    +
-                  </button>
-                  <button
-                    onClick={() => removeFromCart(product.id, product.selectedOption)}
-                    className="text-red-500 ml-4"
-                  >
-                    Удалить
-                  </button>
+                  <div>
+                    <button
+                      onClick={() => decreaseQuantity(product.id, product.selectedOption)}
+                      className="px-2 py-1 bg-gray-200 rounded"
+                    >
+                      -
+                    </button>
+                    <span>{product.quantity}</span>
+                    <button
+                      onClick={() => increaseQuantity(product.id, product.selectedOption)}
+                      className="px-2 py-1 bg-gray-200 rounded"
+                    >
+                      +
+                    </button>
+                    <button
+                      onClick={() => removeFromCart(product.id, product.selectedOption)}
+                      className="text-red-500 ml-4"
+                    >
+                      Удалить
+                    </button>
+                  </div>
+                  
                 </div>
               </li>
             ))}

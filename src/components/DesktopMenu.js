@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { useCart } from '../store/cartContext'
 import { useRouter, usePathname } from 'next/navigation'
 import logo from '../../public/images/logo.svg'
+import cartIcon from '../../public/icons/cart.svg'
 
 const DesktopMenu = () => {
 
@@ -55,7 +56,14 @@ const DesktopMenu = () => {
                             onClick={goToCart}
                             className="cursor-pointer flex items-center relative"
                         >
-                            <svg
+                            <Image
+                                src={cartIcon}
+                                width={24}
+                                height={24}
+                                alt='cart'
+                                className='object-contain'
+                            />
+                            {/* <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
                                 height="24"
@@ -70,7 +78,7 @@ const DesktopMenu = () => {
                                     strokeWidth="2"
                                     d="M3 3h18l-2 9H5l-2-9zM6 14h12m-6 4v4"
                                 />
-                            </svg>
+                            </svg> */}
                             {cart.length > 0 && (
                                 <span className="absolute -top-2 -right-2 bg-[#F1ADAE] text-black text-xs font-bold rounded-full px-2">
                                     {cart.length}

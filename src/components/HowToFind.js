@@ -1,4 +1,5 @@
 import YandexMap from "./YandexMap";
+import Link from "next/link";
 
 const HowToFind = () => {
     return (
@@ -10,13 +11,9 @@ const HowToFind = () => {
             Наш адрес: г. Сургут, ул. Ивана Захарова 11/1
           </p>
           <div className="flex justify-center gap-6 mt-4">
-            <a href="https://twitter.com" target="_blank" className="hover:text-[#F4BEBC]">
-                Twitter
-            </a>
-            <a href="https://instagram.com" target="_blank" className="hover:text-[#F4BEBC]">
-                Instagram
-            </a>
-            {/* Добавьте другие ссылки на соцсети по необходимости */}
+            <Link href="https://www.instagram.com/klubnika_surgut?igsh=eXJzdW9tb3ljbzRx" target="_blank" className="hover:text-[#F4BEBC]">
+              <p>Instagram</p>
+            </Link>
           </div>
         </div>
       </div>
