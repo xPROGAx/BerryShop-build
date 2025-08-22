@@ -7,10 +7,10 @@ const Footer = () => {
           <p>&copy; 2025 Ваша Компания. Все права защищены.</p>
           <div className="mt-2">
             <Link href="/terms">
-              <p className="text-white mx-2">Условия</p>
+              <p className="text-white mx-2">Условия использования</p>
             </Link>
             <Link href="/privacy">
-              <p className="text-white mx-2">Условия</p>
+              <p className="text-white mx-2">Политика конфиденциальности</p>
             </Link>
           </div>
         </div>

@@ -8,17 +8,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { registerLocale, setDefaultLocale } from "react-datepicker";
+import ru from "date-fns/locale/ru";
+
+registerLocale('ru', ru);
 
 const orderSchema = z.object({
   senderName: z.string().min(1, 'Имя отправителя обязательно'),
   senderEmail: z.string().email('Некорректный E-mail'),
-  senderPhone: z.string()
-    .min(10, 'Телефон должен содержать не менее 10 символов')
-    .regex(/^[\d+]+$/, 'Телефон должен содержать только цифры'),
-  contactMethod: z.string().optional(),
-  deliveryDate: z.string().min(1, 'Выберите дату доставки'),
-  deliveryTime: z.string().min(1, 'Выберите время доставки'),
-  deliveryMethod: z.string().optional(),
+  senderPhone: z.string().optional(),
+  contactMethod: z.string().min(1, 'Выберите способ связи, ТГ, ВК, телефон'),
+  deliveryDate: z.string().optional(),
+  deliveryTime: z.string().optional(),
+  deliveryMethod: z.string().min(1, 'Выберите способ доставки'),
 
   recipientAddress: z.string().optional(),
   comment: z.string().optional(),
@@ -96,12 +98,10 @@ const CartPage = () => {
     try {
       if (!verificationStep) {
         const code = Math.floor(1000 + Math.random() * 9000).toString();
-        const phone = data.senderPhone.replace(/\D/g, '');
         const botUrl = `https://t.me/BerryShopAuthBot?start=${phone}_${code}`;
         window.open(botUrl, '_blank');
 
         setGeneratedCode(code);
-        setPhone(phone);
         setVerificationStep(true);
         return;
       }
@@ -132,11 +132,8 @@ const CartPage = () => {
     message += `<b>👤 Отправитель:</b>\n`;
     message += `- Имя: ${formData.senderName}\n`;
     message += `- Email: ${formData.senderEmail}\n`;
-    message += `- Телефон: ${formData.senderPhone}\n\n`;
-
-    message += `<b>📅 Доставка:</b>\n`;
-    message += `- Дата: ${formData.deliveryDate}\n`;
-    message += `- Время: ${formData.deliveryTime}\n\n`;
+    message += `- Способ связи: ${formData.contactMethod}\n\n`;
+    message += `- Способ доставки: ${formData.deliveryMethod}\n\n`
 
     // Добавляем содержимое корзины
     message += `<b>🛒 Товары:</b>\n`;
@@ -177,38 +174,6 @@ const CartPage = () => {
     return false;
   }
 }
-
-  const [currentTime, setCurrentTime] = useState(new Date());
-
-  // Обновляем текущее время каждую минуту
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 60000); // 60 секунд
-
-    return () => clearInterval(timer);
-  }, []);
-
-  // Функция для проверки, доступно ли время
-  const isTimeAvailable = (timeStr) => {
-    if (!timeStr) return true;
-    
-    const [hours, minutes] = timeStr.split(':').map(Number);
-    const optionTime = new Date();
-    optionTime.setHours(hours, minutes, 0, 0);
-    
-    // Добавляем 1 час (60 минут) к текущему времени для сравнения
-    const comparisonTime = new Date(currentTime.getTime() + 60 * 60 * 1000);
-    
-    return optionTime > comparisonTime;
-  };
-
-  const timeOptions = [
-    { value: "9:00", label: "9:00" },
-    { value: "12:00", label: "12:00" },
-    { value: "15:00", label: "15:00" },
-    { value: "18:00", label: "18:00" }
-  ];
 
   return (
     <div className="container mx-auto p-6">
@@ -270,29 +235,22 @@ const CartPage = () => {
             ))}
           </ul>
 
+          <p className="font-semibold">Итоговая сумма: {total} ₽</p>
+
           <div className="mt-6 flex justify-between items-center">
-            <p className="font-semibold">Итоговая сумма: {total} ₽</p>
             <button
               onClick={clearCart}
               className="bg-red-500 text-white py-2 px-4 rounded-md"
             >
               Очистить корзину
             </button>
-          </div>
 
-          <div className="mt-4">
             <button
               onClick={() => setIsModalOpen(true)}
               className="bg-green-500 text-white py-2 px-4 rounded-md"
             >
               Оформить заказ
             </button>
-          </div>
-          <div className='mt-3 flex flex-col gap-2'>
-            <p className='font-bold'>Количество клубники и урашения могут отличаться от представленных на фотографии.</p>
-            <p className='font-bold'>Срок хранения фруктов в шоколаде 1 сутки.</p>
-            <p className='font-bold'>Желательно употребить в течение первых 12 часов и хранить в холодильнике при температуре от +5 до +10 C.</p>
-            <p className='font-bold'>Перед употреблением подержать при комнатной температуре 15 мин.</p>
           </div>
         </div>
       )}
@@ -321,19 +279,19 @@ const CartPage = () => {
               {!verificationStep ? (
                 <>
                 <div>
-                    <label>Имя отправителя</label>
-                    <input
-                      {...register('senderName')}
-                      placeholder="Имя отправителя"
-                      className="w-full p-2 border rounded-md"
-                    />
-                    {errors.senderName && (
-                      <p className="text-red-500">{errors.senderName.message}</p>
-                    )}
-                  </div>
+                  <label>Имя заказчика</label>
+                  <input
+                    {...register('senderName')}
+                    placeholder="Имя заказчика"
+                    className="w-full p-2 border rounded-md"
+                  />
+                  {errors.senderName && (
+                    <p className="text-red-500">{errors.senderName.message}</p>
+                  )}
+                </div>
 
               <div>
-                <label>E-mail отправителя</label>
+                <label>E-mail заказчика</label>
                 <input
                   {...register('senderEmail')}
                   placeholder="E-mail"
@@ -345,46 +303,29 @@ const CartPage = () => {
               </div>
 
               <div>
-                    <label>Телефон отправителя</label>
-                    <input
-                      {...register('senderPhone')}
-                      placeholder="Телефон отправителя"
-                      className="w-full p-2 border rounded-md"
-                    />
-                    {errors.senderPhone && (
-                      <p className="text-red-500">{errors.senderPhone.message}</p>
-                    )}
-                  </div>
-
-              <div>
-                <label>Дата доставки</label>
-                <DatePicker
-                  selected={selectedDate}
-                  onChange={(date) => setSelectedDate(date)}
-                  dateFormat="dd/MM/yyyy"
+                <label>Укажите способ связи(ТГ, ВК, номер телефона)</label>
+                <input
+                  {...register('contactMethod')}
+                  placeholder="@tg / +7(123)456 78-90"
                   className="w-full p-2 border rounded-md"
-                  minDate={Date.now()}
                 />
+                {errors.contactMethod && (
+                  <p className="text-red-500">{errors.contactMethod.message}</p>
+                )}
               </div>
 
               <div>
-                <label>Время доставки</label>
+                <label>Укажите способ доставки</label>
                 <select
-                  value={selectedTime}
-                  onChange={(e) => setSelectedTime(e.target.value)}
+                  {...register('deliveryMethod')}
                   className="w-full p-2 border rounded-md"
                 >
-                  <option value="">Выберите время</option>
-                  {timeOptions.map((option) => (
-                    <option 
-                      key={option.value}
-                      value={option.value}
-                      disabled={!isTimeAvailable(option.value)}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
+                  <option defaultValue='puckup'>Самовывоз</option>
+                  <option value='deliver'>Доставка</option>
                 </select>
+                {errors.deliveryMethod && (
+                  <p className="text-red-500">{errors.deliveryMethod.message}</p>
+                )}
               </div>
 
               </>
@@ -407,20 +348,21 @@ const CartPage = () => {
               )}
 
               <div className="flex items-center space-x-2">
-                <input
-                  {...register('agreeTerms')}
-                  type="checkbox"
-                  checked={isChecked}
-                  onChange={() => setIsChecked(!isChecked)}
-                  className="form-checkbox"
-                />
-                <label>Я согласен с условиями*</label>
+                <label>
+                  <input
+                    {...register('agreeTerms')}
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={() => setIsChecked(!isChecked)}
+                    className="form-checkbox"
+                  /> Я согласен с условиями*
+                </label>
               </div>
 
               <div>
-                <p>* Принимаем заказы по полной предоплате</p>
-                <p>Укажите номер телефона и мессенджер, где будет удобно связаться с вами для подтверждения заказа и его оплаты</p>
-                <p>Учитывайте, что срок годности клубники в шоколаде 24ч</p>
+                <p className='font-light'>* Принимаем заказы по полной предоплате</p>
+                <p className='font-light'>Укажите номер телефона и мессенджер, где будет удобно связаться с вами для подтверждения заказа и его оплаты</p>
+                <p className='font-light'>Учитывайте, что срок годности клубники в шоколаде 24ч</p>
               </div>
 
               <button
