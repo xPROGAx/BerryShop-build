@@ -13,8 +13,6 @@ const ProductSlider = ({ images, productName }) => {
     return <p>Нет изображений</p>;  // Если нет слайдов, можно показать это сообщение
   }
 
-  console.log(images)
-
   return (
     <div>
       <Swiper

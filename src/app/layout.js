@@ -1,5 +1,5 @@
 // src/app/layout.js
-import { Montserrat, Unbounded, Rubik_Mono_One } from 'next/font/google'
+import { Montserrat, Unbounded, Rubik_Mono_One, Great_Vibes } from 'next/font/google'
 import './globals.css'
 import { CartProvider } from '../store/cartContext'
 import Menu from '../components/Menu'
@@ -7,6 +7,7 @@ import Footer from '../components/Footer'
 import WhyUs from '../components/WhyUs'
 import Reviews from '../components/Reviews'
 import HowToFind from '../components/HowToFind'
+import Price from '../components/Price'
 import { Toaster } from 'react-hot-toast';
 
 // Подключаем шрифты
@@ -28,6 +29,12 @@ const rubikMonoOne = Rubik_Mono_One({
   weight: ['400'],
 })
 
+const greatVibes = Great_Vibes({
+  variable: '--font-great-vibes',
+  subsets: ['latin'],
+  weight: ['400'],
+})
+
 export default function RootLayout({ children }) {
   return (
     <html lang="ru">
@@ -38,11 +45,12 @@ export default function RootLayout({ children }) {
         <title>BerryShop – Клубника в шоколаде и цветы</title>
       </head>
       <body
-        className={`${montserrat.variable} ${unbounded.variable} ${rubikMonoOne.variable} antialiased`}
+        className={`${montserrat.variable} ${unbounded.variable} ${rubikMonoOne.variable} ${greatVibes.variable} antialiased`}
       >
         <CartProvider>
           <Menu />
           <main>{children}</main>
+          <Price />
           <WhyUs />
           <Reviews />
           <HowToFind />

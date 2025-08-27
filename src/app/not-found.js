@@ -11,7 +11,7 @@ export default function NotFound() {
         // height={100}
         className='w-full h-100'
       />
-      <div>
+      <div className='mt-5 mb-5'>
         <Link href="/">
           <p className='font-bold text-4xl ml-auto mr-auto w-100'>Вернуться назад</p>
         </Link>

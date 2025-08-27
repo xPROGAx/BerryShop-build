@@ -11,8 +11,11 @@ const HowToFind = () => {
             Наш адрес: г. Сургут, ул. Ивана Захарова 11/1
           </p>
           <div className="flex justify-center gap-6 mt-4">
-            <Link href="https://www.instagram.com/klubnika_surgut?igsh=eXJzdW9tb3ljbzRx" target="_blank" className="hover:text-[#F4BEBC]">
+            <Link href="https://www.instagram.com/klubnika_surgut?igsh=eXJzdW9tb3ljbzRx" target="_blank" className="hover:text-[#5e3b3a]">
               <p>Instagram</p>
+            </Link>
+            <Link href="https://vk.com/berryshopsurgut" target="_blank" className="hover:text-[#5e3b3a]">
+              <p>VK</p>
             </Link>
           </div>
         </div>
