@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import price1 from '../../public/images/price1.png';
-import price2 from '../../public/images/price2.png';
+import price1 from '../../public/images/price1.PNG';
+import price2 from '../../public/images/price2.PNG';
 
 const Price = () => {
 
