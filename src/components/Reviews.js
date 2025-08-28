@@ -8,13 +8,16 @@ import { Navigation, Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import arrow from '../../public/icons/arrow.svg';
 
-import review from '../../public/images/review.jpg';
-import review2 from '../../public/images/review2.jpg';
-import review3 from '../../public/images/review3.jpg';
-import review4 from '../../public/images/review4.jpg';
-import review5 from '../../public/images/review5.jpg';
-import review6 from '../../public/images/review6.jpg';
-import review7 from '../../public/images/review7.jpg';
+import review from '../../public/images/review.png';
+import review2 from '../../public/images/review2.png';
+import review3 from '../../public/images/review3.png';
+import review4 from '../../public/images/review4.png';
+import review5 from '../../public/images/review5.png';
+import review6 from '../../public/images/review6.png';
+import review7 from '../../public/images/review7.png';
+import review8 from '../../public/images/review8.png';
+import review9 from '../../public/images/review9.png';
+import review10 from '../../public/images/review10.png';
 
 const data = [
   {
@@ -44,6 +47,18 @@ const data = [
   {
     id:7,
     img: review7,
+  },
+  {
+    id:8,
+    img: review8,
+  },
+  {
+    id:9,
+    img: review9,
+  },
+  {
+    id:10,
+    img: review10,
   },
 ]
 

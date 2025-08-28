@@ -75,8 +75,8 @@ const MobileMenu = () => {
                             className="cursor-pointer flex items-center relative"
                         >
                             <Image
-                                width={24}
-                                height={24}
+                                width={35}
+                                height={35}
                                 alt='cart'
                                 src={cartIcon}
                                 className='object-contain'
@@ -98,7 +98,7 @@ const MobileMenu = () => {
                                 />
                             </svg> */}
                             {cart.length > 0 && (
-                                <span className="absolute -top-2 -right-2 bg-[#F1ADAE] text-black text-xs font-bold rounded-full px-2">
+                                <span className="absolute -top-1 -right-1 bg-[#F1ADAE] text-black text-xs font-bold rounded-full px-2">
                                     {cart.length}
                                 </span>
                             )}
