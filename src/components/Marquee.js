@@ -1,15 +1,12 @@
 // components/Marquee.js
-import React from "react";
+'use client'
+import toast from "react-hot-toast";
 
-const MarqueeItem = ({ text }) => (
-  <a
-    href="/app/deals/page.js"
-    className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-black whitespace-nowrap transition"
-  >
-    <span className="text-sm sm:text-base">🍓</span>
-    <p className="hover:underline">{text}</p>
-  </a>
-);
+import React from "react";
+function callManager() {
+  toast.success('Для большей информации свяжитесь с менеджером')
+}
+
 
 const Marquee = () => {
   return (
@@ -21,9 +18,32 @@ const Marquee = () => {
       <div className="marquee-track">
         {[...Array(10)].map((_, i) => (
           <div key={i} className="flex gap-x-4 px-2">
-            <MarqueeItem text="Бесплатная доставка от 5000₽" />
-            <MarqueeItem text="Открытка в подарок!" />
-            <MarqueeItem text="Промокод 3% на первый заказ" />
+            <button
+              href="/app/deals/page.js"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-black whitespace-nowrap transition"
+              onClick={callManager}
+            >
+              <span className="text-sm sm:text-base">🍓</span>
+              <p className="hover:underline">Бесплатная доставка от 5000₽</p>
+            </button>
+
+            <button
+              href="/app/deals/page.js"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-black whitespace-nowrap transition"
+              onClick={callManager}
+            >
+              <span className="text-sm sm:text-base">🍓</span>
+              <p className="hover:underline">Открытка в подарок!</p>
+            </button>
+
+            <button
+              href="/app/deals/page.js"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-black whitespace-nowrap transition"
+              onClick={callManager}
+            >
+              <span className="text-sm sm:text-base">🍓</span>
+              <p className="hover:underline">Промокод 3% на первый заказ</p>
+            </button>
           </div>
         ))}
       </div>
