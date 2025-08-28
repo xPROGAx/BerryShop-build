@@ -10,6 +10,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import ru from "date-fns/locale/ru";
+import { toast } from 'react-hot-toast';
 
 registerLocale('ru', ru);
 

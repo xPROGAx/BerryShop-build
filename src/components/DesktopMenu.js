@@ -4,6 +4,7 @@ import { useCart } from '../store/cartContext'
 import { useRouter, usePathname } from 'next/navigation'
 import logo from '../../public/images/logo.svg'
 import cartIcon from '../../public/icons/cart.svg'
+import { toast } from 'react-hot-toast';
 
 const DesktopMenu = () => {
 
@@ -13,6 +14,10 @@ const DesktopMenu = () => {
 
     const goToCart = () => {
         router.push('/cart')
+    }
+
+    function callManager() {
+        toast.success('Для большей информации свяжитесь с менеджером')
     }
 
     return (
@@ -32,7 +37,7 @@ const DesktopMenu = () => {
                         {[
                             { name: 'Клубника в шоколаде', path: '/strawberry' },
                             { name: 'Цветы', path: '/flowers' },
-                            { name: 'Акции', path: '/deals' },
+                            // { name: 'Акции', path: '/deals' },
                         ].map((item) => (
                             <li key={item.path} className="relative">
                                 <Link
@@ -47,6 +52,7 @@ const DesktopMenu = () => {
                                 )}
                             </li>
                         ))}
+                        <button onClick={callManager}>Акции</button>
                     </ul>
 
                     <div className="text-black mr-4">BerryShop +7 (922) 400-09-40</div>
