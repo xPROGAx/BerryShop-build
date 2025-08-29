@@ -16,10 +16,6 @@ const DesktopMenu = () => {
         router.push('/cart')
     }
 
-    function callManager() {
-        toast.success('Для большей информации свяжитесь с менеджером')
-    }
-
     return (
         <>
             <div className="h-[50px]"></div>
@@ -37,7 +33,7 @@ const DesktopMenu = () => {
                         {[
                             { name: 'Клубника в шоколаде', path: '/strawberry' },
                             { name: 'Цветы', path: '/flowers' },
-                            // { name: 'Акции', path: '/deals' },
+                            { name: 'Акции', path: '/deals' },
                         ].map((item) => (
                             <li key={item.path} className="relative">
                                 <Link
@@ -52,7 +48,6 @@ const DesktopMenu = () => {
                                 )}
                             </li>
                         ))}
-                        <button onClick={callManager}>Акции</button>
                     </ul>
 
                     <div className="text-black mr-4">BerryShop +7 (922) 400-09-40</div>

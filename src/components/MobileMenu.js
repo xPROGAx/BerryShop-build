@@ -18,10 +18,6 @@ const MobileMenu = () => {
 
     const [isOpen, setIsOpen] = useState(false)
 
-    function callManager() {
-        toast.success('Для большей информации свяжитесь с менеджером')
-    }
-
     return (
         <>
             <div className="h-[50px]"></div>
@@ -51,7 +47,7 @@ const MobileMenu = () => {
                             {[
                                 { name: 'Клубника в шоколаде', path: '/strawberry' },
                                 { name: 'Цветы', path: '/flowers' },
-                                // { name: 'Акции', path: '/deals' },
+                                { name: 'Акции', path: '/deals' },
                             ].map((item) => (
                                 <li key={item.path} className="relative flex m-auto">
                                     <Link
@@ -66,7 +62,6 @@ const MobileMenu = () => {
                                     )}
                                 </li>
                             ))}
-                            <button onClick={callManager}>Акции</button>
                             <div className="text-black mr-4 self-center">BerryShop +7 (922) 400-09-40</div>
                             <div className="text-black mr-4 self-center">Менеджер Юлия +7 (917) 928-04-54</div>
                         </ul>
