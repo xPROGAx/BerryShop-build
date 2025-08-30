@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "node server.js",
+    "build": "next build && next export",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
