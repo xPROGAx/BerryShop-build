@@ -1,11 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export', // Критически важно для статического экспорта
-  trailingSlash: true, // Рекомендуется для статического хостинга
-  distDir: 'out', // Явно указываем папку для сборки
+  // УБРАТЬ output: 'export' - так как есть API routes
+  trailingSlash: true,
   
   images: {
-    unoptimized: true, // Обязательно для статического экспорта
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -18,15 +17,6 @@ const nextConfig = {
         pathname: '**'
       }
     ],
-  },
-
-  // Опционально: если нужны дополнительные настройки
-  skipTrailingSlashRedirect: true,
-  skipMiddlewareUrlNormalize: true,
-  
-  // Для отключения функций, которые не работают со статическим экспортом
-  experimental: {
-    missingSuspenseWithCSRBailout: false,
   }
 };
 
