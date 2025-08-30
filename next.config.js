@@ -16,7 +16,11 @@ const nextConfig = {
         pathname: '**'
       }
     ],
-  }
+  },
+
+  skipTrailingSlashRedirect: true,
+  skipMiddlewareUrlNormalize: true,
+
 };
 
 export default nextConfig;
