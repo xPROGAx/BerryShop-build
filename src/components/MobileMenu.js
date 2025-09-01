@@ -24,11 +24,18 @@ const MobileMenu = () => {
             <nav className="bg-[#FFFFFF] fixed top-0 left-0 w-full h-[50px] shadow-md z-50">
                 <div className="container mx-auto flex justify-between items-center h-full px-4">
                     <Link href="/" className="text-2xl font-bold text-black">
-                        <Image 
-                            src={logo} 
-                            alt='BerryShop' 
-                            width={225} 
-                            height={36}
+                       <Image 
+                          src={logo} 
+                          alt='BerryShop'
+                          width={225}
+                          height={36}
+                          className="
+                            w-[180px] h-[28px]  // мобильные
+                            md:w-[200px] md:h-[32px]  // планшеты  
+                            lg:w-[225px] lg:h-[36px]  // десктоп
+                          "
+                          priority
+                          sizes="(max-width: 768px) 180px, (max-width: 1024px) 200px, 225px"
                         />
                     </Link>
                     <button
