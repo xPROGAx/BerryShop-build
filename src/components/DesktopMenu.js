@@ -23,10 +23,17 @@ const DesktopMenu = () => {
                 <div className="container mx-auto flex justify-between items-center h-full px-4">
                     <Link href="/" className="text-2xl font-bold text-black">
                         <Image 
-                            src={logo} 
-                            alt='BerryShop' 
-                            width={225} 
-                            height={36}
+                          src={logo} 
+                          alt='BerryShop'
+                          width={225}
+                          height={36}
+                          className="
+                            w-[180px] h-[28px]  // мобильные
+                            md:w-[200px] md:h-[32px]  // планшеты  
+                            lg:w-[225px] lg:h-[36px]  // десктоп
+                          "
+                          priority
+                          sizes="(max-width: 768px) 180px, (max-width: 1024px) 200px, 225px"
                         />
                     </Link>
                     <ul className="flex gap-6 text-black font-semibold">
