@@ -4,7 +4,7 @@ import { useCart } from '../store/cartContext'
 import { useRouter, usePathname } from 'next/navigation'
 import { useState } from 'react'
 import extra from '../../public/icons/extra.svg'
-import logo from '../../public/images/logo.svg'
+import logo from '../../public/icons/main-logo.png'
 import cartIcon from '../../public/icons/cart.svg'
 
 const MobileMenu = () => {
@@ -37,6 +37,7 @@ const MobileMenu = () => {
                           priority
                           sizes="(max-width: 768px) 180px, (max-width: 1024px) 200px, 225px"
                         />
+                        <span className="text-xl font-bold text-gray-800 tracking-wide">BerryShop</span>
                     </Link>
                     <button
                         onClick={() => {setIsOpen(!isOpen)}}
