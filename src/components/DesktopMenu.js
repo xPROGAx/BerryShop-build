@@ -2,7 +2,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useCart } from '../store/cartContext'
 import { useRouter, usePathname } from 'next/navigation'
-import logo from '../../public/images/logo.svg'
+import logo from '../../public/icons/main-logo.png'
+import house from '../../public/icons/house.png'
 import cartIcon from '../../public/icons/cart.svg'
 import { toast } from 'react-hot-toast';
 
@@ -35,6 +36,19 @@ const DesktopMenu = () => {
                           priority
                           sizes="(max-width: 768px) 180px, (max-width: 1024px) 200px, 225px"
                         />
+                        <Image 
+                          src={house} 
+                          alt='Home page'
+                          width={225}
+                          height={36}
+                          className="
+                            w-[180px] h-[28px]  // мобильные
+                            md:w-[200px] md:h-[32px]  // планшеты  
+                            lg:w-[225px] lg:h-[36px]  // десктоп
+                          "
+                          priority
+                          sizes="(max-width: 768px) 180px, (max-width: 1024px) 200px, 225px"
+                        />      
                     </Link>
                     <ul className="flex gap-6 text-black font-semibold">
                         {[
