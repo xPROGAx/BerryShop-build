@@ -23,59 +23,63 @@ const MobileMenu = () => {
             <div className="h-[50px]"></div>
             <nav className="bg-[#FFFFFF] fixed top-0 left-0 w-full h-[50px] shadow-md z-50">
                 <div className="container mx-auto flex justify-between items-center h-full px-4">
-                    <Link href="/" className="text-2xl font-bold text-black">
-                       <Image 
-                          src={logo} 
-                          alt='BerryShop'
-                          width={225}
-                          height={36}
-                          className="
-                            w-[180px] h-[28px]  // мобильные
-                            md:w-[200px] md:h-[32px]  // планшеты  
-                            lg:w-[225px] lg:h-[36px]  // десктоп
-                          "
-                          priority
-                          sizes="(max-width: 768px) 180px, (max-width: 1024px) 200px, 225px"
+                    <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                        <Image 
+                            src={logo} 
+                            alt='BerryShop'
+                            width={180}
+                            height={29}
+                            className="w-[140px] h-[22px] object-contain md:w-[160px] md:h-[26px]"
+                            priority
                         />
-                        <span className="text-xl font-bold text-gray-800 tracking-wide">BerryShop</span>
+                        <span className="text-base font-bold text-gray-800 whitespace-nowrap md:hidden">
+                            BerryShop
+                        </span>
                     </Link>
+
                     <button
-                        onClick={() => {setIsOpen(!isOpen)}}
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="p-1"
                     >
                         <Image
                             className='hover:bg-gray-300 rounded-full p-1'
                             src={extra}
-                            alt=''
+                            alt='Меню'
                             width={40}
                             height={40}
                         />
                     </button>
-                    <div className={`${isOpen ? 'flex' : 'hidden'}`}>
-                        <ul className='flex flex-col absolute top-12 left-0 rounded-b-md w-full gap-6 bg-white text-black font-semibold border-b-2 pb-5'>
-                            {[
-                                { name: 'Клубника в шоколаде', path: '/strawberry' },
-                                { name: 'Цветы', path: '/flowers' },
-                                { name: 'Акции', path: '/deals' },
-                            ].map((item) => (
-                                <li key={item.path} className="relative flex m-auto">
-                                    <Link
-                                        href={item.path}
-                                        className={`hover:text-red-500 ${pathname === item.path ? 'text-red-500' : ''
-                                            }`}
-                                    >
-                                        {item.name}
-                                    </Link>
-                                    {pathname === item.path && (
-                                        <span className="absolute bottom-[-3px] left-0 w-full h-[1px] bg-black"></span>
-                                    )}
-                                </li>
-                            ))}
-                            <div className="text-black mr-4 self-center">BerryShop +7 (922) 400-09-40</div>
-                            <div className="text-black mr-4 self-center">Менеджер Юлия +7 (917) 928-04-54</div>
-                        </ul>
-                    </div>
 
-                    
+                    {isOpen && (
+                        <div className="absolute top-full left-0 w-full bg-white shadow-lg border-t">
+                            <ul className='flex flex-col gap-4 p-5 text-black font-semibold'>
+                                {[
+                                    { name: 'Клубника в шоколаде', path: '/strawberry' },
+                                    { name: 'Цветы', path: '/flowers' },
+                                    { name: 'Акции', path: '/deals' },
+                                ].map((item) => (
+                                    <li key={item.path} className="relative py-2 border-b last:border-b-0">
+                                        <Link
+                                            href={item.path}
+                                            className={`hover:text-red-500 block ${pathname === item.path ? 'text-red-500' : ''}`}
+                                            onClick={() => setIsOpen(false)}
+                                        >
+                                            {item.name}
+                                        </Link>
+                                        {pathname === item.path && (
+                                            <span className="absolute bottom-0 left-0 w-full h-[1px] bg-black"></span>
+                                        )}
+                                    </li>
+                                ))}
+                                <li className="text-sm text-gray-600 pt-2">
+                                    BerryShop +7 (922) 400-09-40
+                                </li>
+                                <li className="text-sm text-gray-600">
+                                    Менеджер Юлия +7 (917) 928-04-54
+                                </li>
+                            </ul>
+                        </div>
+                    )}
 
                     <div className="relative">
                         <button
@@ -85,26 +89,10 @@ const MobileMenu = () => {
                             <Image
                                 width={35}
                                 height={35}
-                                alt='cart'
+                                alt='Корзина покупок'
                                 src={cartIcon}
                                 className='object-contain'
                             />
-                            {/* <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                className="text-black"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M3 3h18l-2 9H5l-2-9zM6 14h12m-6 4v4"
-                                />
-                            </svg> */}
                             {cart.length > 0 && (
                                 <span className="absolute -top-1 -right-1 bg-[#F1ADAE] text-black text-xs font-bold rounded-full px-2">
                                     {cart.length}
