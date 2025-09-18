@@ -1,31 +1,21 @@
 import React from "react";
-import Marquee from "@/components/Marquee"; // путь подставь свой, если структура отличается
+import Marquee from "@/components/Marquee";
 
 const Header = () => {
   return (
-    <header className="bg-F8DAD8 text-center py-12">
+    <header className="bg-F8DAD8 text-center py-8 md:py-10 lg:py-12">
       {/* Заголовок */}
-      <h1 className="text-5xl font-bold text-9E0E05">
+      <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-9E0E05 px-4">
         Свежая клубника в шоколаде и цветы
       </h1>
-      <p className="text-xl text-49321d mt-4">
+      <p className="text-lg md:text-xl text-49321d mt-3 md:mt-4 px-4">
         Подарите радость и сладкие моменты
       </p>
 
       {/* Бегущая строка */}
-      <div className="mt-6">
+      <div className="mt-4 md:mt-6 px-4">
         <Marquee />
       </div>
-
-      {/* Кнопки навигации */}
-      {/* <div className="mt-6 flex justify-center gap-4">
-        <a href="#strawberry" className="bg-49321d text-white px-6 py-3 rounded-full hover:bg-F1ADAE transition">
-          Клубника в шоколаде
-        </a>
-        <a href="#flowers" className="bg-49321d text-white px-6 py-3 rounded-full hover:bg-F1ADAE transition">
-          Цветы
-        </a>
-      </div> */}
     </header>
   );
 };
