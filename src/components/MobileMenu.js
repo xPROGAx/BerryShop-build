@@ -37,6 +37,9 @@ const MobileMenu = () => {
                                 priority
                                 style={{ maxWidth: 'none' }}
                             />
+                            <span className="text-base font-bold text-gray-800 whitespace-nowrap">
+                                BerryShop
+                            </span>
                         </div>
                     </Link>
 
