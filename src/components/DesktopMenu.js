@@ -2,7 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useCart } from '../store/cartContext'
 import { useRouter, usePathname } from 'next/navigation'
-import logo from '../../public/icons/main-logo.svg'
+import logo from '../../public/icons/main-logo.png'
 import cartIcon from '../../public/icons/cart.svg'
 
 const DesktopMenu = () => {
