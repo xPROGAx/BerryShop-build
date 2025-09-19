@@ -38,7 +38,7 @@ const MobileMenu = () => {
                                 style={{ maxWidth: 'none' }}
                             />
                             <span className="text-base font-bold text-gray-800 whitespace-nowrap">
-                                BerryShop
+                                BERRYSHOP
                             </span>
                         </div>
                     </Link>
