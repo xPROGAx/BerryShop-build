@@ -41,7 +41,7 @@ const DesktopMenu = () => {
                             />
                         </div>
                         <span className="text-xl font-bold text-gray-800 whitespace-nowrap ml-1">
-                            BerryShop
+                            BERRYSHOP
                         </span>
                     </Link>
 
