@@ -113,13 +113,6 @@ const MobileMenu = () => {
                     )}
                 </div>
             </nav>
-            
-            {isOpen && (
-                <div 
-                    className="fixed inset-0 bg-black bg-opacity-30 z-40 mt-[70px] cursor-pointer"
-                    onClick={() => setIsOpen(false)}
-                />
-            )}
         </>
     )
 }
