@@ -78,6 +78,14 @@ const CartPage = () => {
     0
   );
 
+  const ADMIN_CHAT_IDS = [
+    '581497267', 
+    '1151637117',
+    '882264045',
+    '823779634',
+    '878074165'
+  ];
+
   const closeModal = () => {
     setIsModalOpen(false);
     setVerificationStep(false); // Сбрасываем шаг верификации
@@ -154,61 +162,83 @@ const CartPage = () => {
 
     message += `\n<b>💰 Итого: ${total} ₽</b>`;
 
-    // Отправляем сообщение со ссылками на изображения
-    const response = await fetch(`https://api.telegram.org/bot7969947917:AAGPqZxT7FxAmbR4HA8ntRVPTh0seL51law/sendMessage`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        chat_id: '581497267',
-        text: message,
-        parse_mode: 'HTML',
-        disable_web_page_preview: true
-      })
+    // Отправляем сообщение всем администраторам
+    const sendPromises = ADMIN_CHAT_IDS.map(async (chatId) => {
+      try {
+        // Отправляем текстовое сообщение
+        const textResponse = await fetch(`https://api.telegram.org/bot7969947917:AAGPqZxT7FxAmbR4HA8ntRVPTh0seL51law/sendMessage`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: message,
+            parse_mode: 'HTML',
+            disable_web_page_preview: true
+          })
+        });
+
+        const textData = await textResponse.json();
+
+        if (!textResponse.ok) {
+          console.error(`Ошибка отправки сообщения для ${chatId}:`, textData);
+          return { chatId, success: false, error: textData };
+        }
+
+        console.log(`Сообщение успешно отправлено для ${chatId}:`, textData);
+
+        // Отправляем фотографии для каждого товара
+        for (const item of cart) {
+          if (item.image) {
+            try {
+              const photoMessage = `
+                📸 <b>${item.name}</b>
+                🎯 ${item.selectedOption}
+                📦 ${item.quantity} × ${item.price}
+              `.trim();
+
+              await fetch(`https://api.telegram.org/bot7969947917:AAGPqZxT7FxAmbR4HA8ntRVPTh0seL51law/sendPhoto`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  chat_id: chatId,
+                  photo: item.image,
+                  caption: photoMessage,
+                  parse_mode: 'HTML'
+                })
+              });
+
+              // Задержка между отправками
+              await new Promise(resolve => setTimeout(resolve, 500));
+              
+            } catch (photoError) {
+              console.warn(`Не удалось отправить фото для ${item.name} пользователю ${chatId}:`, photoError);
+              continue;
+            }
+          }
+        }
+
+        return { chatId, success: true };
+      } catch (error) {
+        console.error(`Ошибка при отправке для ${chatId}:`, error);
+        return { chatId, success: false, error };
+      }
     });
 
-    const data = await response.json();
+    // Ждем завершения всех отправок
+    const results = await Promise.all(sendPromises);
+    
+    // Проверяем результаты
+    const successfulSends = results.filter(result => result.success);
+    const failedSends = results.filter(result => !result.success);
 
-    if (!response.ok) {
-      console.error('Ошибка Telegram API:', data);
-      throw new Error('Ошибка отправки сообщения');
-    }
+    console.log(`Успешно отправлено: ${successfulSends.length}, Не удалось: ${failedSends.length}`);
 
-    console.log('Сообщение успешно отправлено:', data);
-
-    // Дополнительно: отправляем каждое изображение отдельным сообщением с превью
-    for (const item of cart) {
-      if (item.image) {
-        try {
-          const photoMessage = `
-            📸 <b>${item.name}</b>
-            🎯 ${item.selectedOption}
-            📦 ${item.quantity} × ${item.price}
-          `.trim();
-
-          await fetch(`https://api.telegram.org/bot7969947917:AAGPqZxT7FxAmbR4HA8ntRVPTh0seL51law/sendPhoto`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              chat_id: '581497267',
-              photo: item.image, // Прямая ссылка на изображение
-              caption: photoMessage,
-              parse_mode: 'HTML'
-            })
-          });
-
-          // Задержка между отправками
-          await new Promise(resolve => setTimeout(resolve, 500));
-          
-        } catch (photoError) {
-          console.warn(`Не удалось отправить фото для ${item.name}:`, photoError);
-          // Продолжаем отправку остальных
-          continue;
-        }
-      }
+    if (successfulSends.length === 0) {
+      throw new Error('Не удалось отправить заказ ни одному администратору');
     }
 
     alert('Спасибо за заказ, скоро с вами свяжется менеджер');
@@ -216,7 +246,7 @@ const CartPage = () => {
     return true;
   } catch (error) {
     console.error('Ошибка при отправке данных:', error);
-    return false;
+    throw error; // Пробрасываем ошибку для обработки в handleSubmitOrder
   }
 }
 
@@ -415,8 +445,8 @@ useEffect(() => {
                   {...register('deliveryMethod')}
                   className="w-full p-2 border rounded-md"
                 >
-                  <option defaultValue='puckup'>Самовывоз</option>
-                  <option value='deliver'>Доставка</option>
+                  <option defaultValue='Самовывоз'>Самовывоз</option>
+                  <option value='Доставка'>Доставка</option>
                 </select>
                 {errors.deliveryMethod && (
                   <p className="text-red-500">{errors.deliveryMethod.message}</p>
