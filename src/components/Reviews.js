@@ -62,9 +62,6 @@ const data = [
   },
 ]
 
-console.log(data);
-
-
 const Reviews = () => {
 
     return (
@@ -76,9 +73,10 @@ const Reviews = () => {
               modules={[Navigation, Autoplay]}
               slidesPerView={1}
               loop='true'
-              autoplay={
-                'delay: 1000'
-              }
+              autoplay={{
+                delay: 5000,
+                disableOnInteraction: false,
+              }}
               navigation={{
                 nextEl: '.swiper-button-left',
                 prevEl: '.swiper-button-right'

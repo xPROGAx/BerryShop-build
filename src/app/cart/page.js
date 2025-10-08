@@ -19,7 +19,8 @@ const orderSchema = z.object({
   senderEmail: z.string().email('Некорректный E-mail'),
   senderPhone: z.string().optional(),
   contactMethod: z.string().min(1, 'Выберите способ связи, ТГ, ВК, телефон'),
-  deliveryDate: z.string().optional(),
+  deliveryDate: z.string().min(1, 'Выберите дату доставки'),
+  // deliveryTime: z.string().min(1, 'Выберите время доставки'),
   deliveryTime: z.string().optional(),
   deliveryMethod: z.string().min(1, 'Выберите способ доставки'),
 
@@ -44,6 +45,7 @@ const CartPage = () => {
   const [verificationStep, setVerificationStep] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   const [generatedCode, setGeneratedCode] = useState('');
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   const {
     register,
@@ -134,17 +136,25 @@ const CartPage = () => {
     message += `- Имя: ${formData.senderName}\n`;
     message += `- Email: ${formData.senderEmail}\n`;
     message += `- Способ связи: ${formData.contactMethod}\n\n`;
-    message += `- Способ доставки: ${formData.deliveryMethod}\n\n`
+    message += `- Способ доставки: ${formData.deliveryMethod}\n\n`;
+    message += `- Дата: ${formData.deliveryDate}\n`;
+    message += `- Время: ${formData.deliveryTime}\n\n`;
 
-    // Добавляем содержимое корзины
+    // Добавляем содержимое корзины со ссылками на изображения
     message += `<b>🛒 Товары:</b>\n`;
     cart.forEach((item, index) => {
-      message += `${index + 1}. ${item.name} (${item.selectedOption}) - ${item.quantity} × ${item.price}\n`;
+      message += `${index + 1}. ${item.name}\n`;
+      message += `   🎯 Вариант: ${item.selectedOption}\n`;
+      message += `   📦 Количество: ${item.quantity} × ${item.price}\n`;
+      if (item.image) {
+        message += `   📸 Изображение: ${item.image}\n`;
+      }
+      message += `\n`;
     });
 
     message += `\n<b>💰 Итого: ${total} ₽</b>`;
 
-    // Отправляем запрос к Telegram API
+    // Отправляем сообщение со ссылками на изображения
     const response = await fetch(`https://api.telegram.org/bot7969947917:AAGPqZxT7FxAmbR4HA8ntRVPTh0seL51law/sendMessage`, {
       method: 'POST',
       headers: {
@@ -153,13 +163,12 @@ const CartPage = () => {
       body: JSON.stringify({
         chat_id: '581497267',
         text: message,
-        parse_mode: 'HTML'
+        parse_mode: 'HTML',
+        disable_web_page_preview: true
       })
     });
 
     const data = await response.json();
-
-    alert('Спасибо за заказ, скоро с вами свяжется менеджер')
 
     if (!response.ok) {
       console.error('Ошибка Telegram API:', data);
@@ -168,13 +177,98 @@ const CartPage = () => {
 
     console.log('Сообщение успешно отправлено:', data);
 
+    // Дополнительно: отправляем каждое изображение отдельным сообщением с превью
+    for (const item of cart) {
+      if (item.image) {
+        try {
+          const photoMessage = `
+            📸 <b>${item.name}</b>
+            🎯 ${item.selectedOption}
+            📦 ${item.quantity} × ${item.price}
+          `.trim();
+
+          await fetch(`https://api.telegram.org/bot7969947917:AAGPqZxT7FxAmbR4HA8ntRVPTh0seL51law/sendPhoto`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              chat_id: '581497267',
+              photo: item.image, // Прямая ссылка на изображение
+              caption: photoMessage,
+              parse_mode: 'HTML'
+            })
+          });
+
+          // Задержка между отправками
+          await new Promise(resolve => setTimeout(resolve, 500));
+          
+        } catch (photoError) {
+          console.warn(`Не удалось отправить фото для ${item.name}:`, photoError);
+          // Продолжаем отправку остальных
+          continue;
+        }
+      }
+    }
+
+    alert('Спасибо за заказ, скоро с вами свяжется менеджер');
+
     return true;
   } catch (error) {
     console.error('Ошибка при отправке данных:', error);
-
     return false;
   }
 }
+
+useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000); // 60 секунд
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // Функция для проверки, доступно ли время
+  const isTimeAvailable = (timeStr) => {
+    if (!timeStr) return true;
+    
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    const optionTime = new Date();
+    optionTime.setHours(hours, minutes, 0, 0);
+    
+    // Добавляем 1 час (60 минут) к текущему времени для сравнения
+    const comparisonTime = new Date(currentTime.getTime() + 60 * 60 * 1000);
+    
+    return optionTime > comparisonTime;
+  };
+
+  const timeOptions = [
+    { value: "9:00", label: "9:00" },
+    { value: "9:30", label: "9:30" },
+    { value: "10:00", label: "10:00" },
+    { value: "10:30", label: "10:30" },
+    { value: "11:00", label: "11:00" },
+    { value: "11:30", label: "11:30" },
+    { value: "12:00", label: "12:00" },
+    { value: "12:30", label: "12:30" },
+    { value: "13:00", label: "13:00" },
+    { value: "13:30", label: "13:30" },
+    { value: "14:00", label: "14:00" },
+    { value: "14:30", label: "14:30" },
+    { value: "15:00", label: "15:00" },
+    { value: "15:30", label: "15:30" },
+    { value: "16:00", label: "16:00" },
+    { value: "16:30", label: "16:30" },
+    { value: "17:00", label: "17:00" },
+    { value: "17:30", label: "17:30" },
+    { value: "18:00", label: "18:00" },
+    { value: "18:30", label: "18:30" },
+    { value: "19:00", label: "19:00" },
+    { value: "19:30", label: "19:30" },
+    { value: "20:00", label: "20:00" },
+    { value: "20:30", label: "20:30" },
+    { value: "21:00", label: "21:00" },
+  ];
 
   return (
     <div className="container mx-auto p-6">
@@ -328,6 +422,37 @@ const CartPage = () => {
                   <p className="text-red-500">{errors.deliveryMethod.message}</p>
                 )}
               </div>
+
+              <div>
+                <label>Дата доставки</label>
+                <DatePicker
+                  selected={selectedDate}
+                  onChange={(date) => setSelectedDate(date)}
+                  dateFormat="dd/MM/yyyy"
+                  className="w-full p-2 border rounded-md"
+                  minDate={Date.now()}
+                />
+              </div>
+
+              {/* <div>
+                <label>Время доставки</label>
+                <select
+                  value={selectedTime}
+                  onChange={(e) => setSelectedTime(e.target.value)}
+                  className="w-full p-2 border rounded-md"
+                >
+                  <option value="" hidden disabled>Выберите время</option>
+                  {timeOptions.map((option) => (
+                    <option 
+                      key={option.value}
+                      value={option.value}
+                      disabled={!isTimeAvailable(option.value)}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div> */}
 
               </>
               ) : (
